@@ -1,8 +1,9 @@
 require 'sinatra'
 require_relative "user.rb"
-require_relative "video.rb"
 
 enable :sessions
+
+set :session_secret, 'super secret'
 
 get "/login" do
 	erb :"authentication/login"
@@ -37,18 +38,14 @@ post "/register" do
 	email = params[:email]
 	password = params[:password]
 
-	if email && password && User.first(email: email.downcase).nil?
-		u = User.new
-		u.email = email.downcase
-		u.password =  password
-		u.save
+	u = User.new
+	u.email = email.downcase
+	u.password =  password
+	u.save
 
-		session[:user_id] = u.id
+	session[:user_id] = u.id
 
-		erb :"authentication/successful_signup"
-	else
-		erb :"authentication/failed_signup"
-	end
+	erb :"authentication/successful_signup"
 
 end
 
@@ -67,12 +64,5 @@ end
 def authenticate!
 	if !current_user
 		redirect "/login"
-	end
-end
-
-def admin!
-	authenticate!
-	if !current_user.administrator
-		redirect "/"
 	end
 end
