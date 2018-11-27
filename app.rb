@@ -6,15 +6,25 @@ require_relative "authentication.rb"
 # GET /login
 # GET /logout
 # GET /sign_up
-
+if User.all(type: 2).count == 0
+	u = User.new
+	u.email = "admin@admin.com"
+	u.password = "admin"
+	u.type = 2
+	u.save
+end
 # authenticate! will make sure that the user is signed in, if they are not they will be redirected to the login page
 # if the user is signed in, current_user will refer to the signed in user object.
 # if they are not signed in, current_user will be nil
 
 get "/" do
+	# If not logged in
 	erb :index
+	# If free log in
+		# erb:freeIndex
+	# If pro log in
+		# erb:proIndex
 end
-
 
 get "/dashboard" do
 	authenticate!
