@@ -6,6 +6,8 @@ require_relative "authentication.rb"
 # GET /login
 # GET /logout
 # GET /sign_up
+
+enable :sessions
 if User.all(type: 2).count == 0
 	u = User.new
 	u.email = "admin@admin.com"
@@ -18,15 +20,23 @@ end
 # if they are not signed in, current_user will be nil
 
 get "/" do
-	# If not logged in
 	erb :index
-	# If free log in
-		# erb:freeIndex
-	# If pro log in
-		# erb:proIndex
 end
 
-get "/dashboard" do
-	authenticate!
-	erb :dashboard
+post "/process_download" do
+	urls = Array.new
+	
+	4.times do |x|
+		key = "url" + x.to_s
+		if params[key] != ""
+			urls.push(params[key])
+		end
+	end
+	
+	if urls.empty?
+		flash[:error] = "Please enter a Youtube URL "
+	else
+		flash[:success] = "Will download in the future"
+	end
+	redirect "/"
 end

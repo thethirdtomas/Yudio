@@ -1,26 +1,29 @@
 
-<br /><br /><br />
+<!-- Jumbotron -->
+<div class="jumbotron jumbotron-fluid" id="jumbo-header">
+  <div class="container">
+    <h1 class="display-4">Convert Youtube to MP3</h1>
+    <p class="lead">Create an account to store links and more </p>
+  </div>
+</div>
+<!-- End Jumbotron -->
+
+
+<!-- URL Form -->
+<div class="container" id="url_forms" >
+<form action="process_download" method="POST">
+<%4.times do |x|%>
 <div class="input-group input-group-lg">
   <div class="input-group-prepend">
     <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
   </div>
-  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+  <input type="text" name="url<%=x%>"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
 </div>
-<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
-  </div>
-  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+<%end%>
+<br />
+<center>
+<button type="submit" class="btn btn-info" id="convert-button">Convert</button>
+</center>
+</form>
 </div>
-<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
-  </div>
-  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-</div>
-<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
-  </div>
-  <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-</div>
+<!-- End URL Form -->

@@ -20,7 +20,8 @@ post "/process_login" do
 		session[:user_id] = user.id
 		redirect "/"
 	else
-		erb :"authentication/invalid_login"
+		flash[:error] = "Invalid username or password"
+		redirect "/login"
 	end
 end
 
@@ -29,8 +30,8 @@ get "/logout" do
 	redirect "/"
 end
 
-get "/sign_up" do
-	erb :"authentication/sign_up"
+get "/create_account" do
+	erb :"authentication/create_account"
 end
 
 
