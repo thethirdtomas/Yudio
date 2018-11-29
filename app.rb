@@ -2,7 +2,6 @@ require "sinatra"
 require 'sinatra/flash'
 require_relative "authentication.rb"
 require_relative "validation.rb"
-require_relative 'download.rb'
 
 #the following urls are included in authentication.rb
 # GET /login
@@ -22,24 +21,19 @@ end
 # if they are not signed in, current_user will be nil
 
 get "/" do
+	@download_ready = params["download_ready"]
+	@video_id = params["video_id"]
 	erb :index
 end
 
 post "/process_download" do
-	urls = Array.new
 	
-	4.times do |x|
-		key = "url" + x.to_s
-		if valid_url(params[key])
-			download_mp3(params[key])
-		end
-	end
-	
-
-	if urls.empty? 
-		flash[:error] = "Please enter a Youtube URL "
+	if valid_url(params[:url])
+		video_id = get_video_id(params[:url])
+		flash[:success] = "MP3 download ready"
+		redirect "/?download_ready=true&video_id=#{video_id}"
 	else
-		flash[:success] = "Will download in the future"
+		flash[:error] = "Please enter a Youtube URL "
+		redirect "/"
 	end
-	redirect "/"
 end

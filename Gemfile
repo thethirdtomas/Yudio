@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 gem 'sinatra'
 gem 'data_mapper'
 gem 'sinatra-flash'
-gem 'youtube-dl.rb'
 group :development do
   gem "sqlite3-ruby"
   gem "dm-sqlite-adapter"

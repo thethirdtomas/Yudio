@@ -12,18 +12,23 @@
 <!-- URL Form -->
 <div class="container" id="url_forms" >
 <form action="process_download" method="POST">
-<%4.times do |x|%>
 <div class="input-group input-group-lg">
   <div class="input-group-prepend">
     <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
   </div>
-  <input type="text" name="url<%=x%>"class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+  <input type="text" name="url" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+  <button type="submit" class="btn btn-info" id="convert-button">Convert</button>
 </div>
-<%end%>
 <br />
-<center>
-<button type="submit" class="btn btn-info" id="convert-button">Convert</button>
-</center>
 </form>
 </div>
 <!-- End URL Form -->
+
+<%if @download_ready%>
+<!-- Download button -->
+<center>
+<iframe width="220px" height="50px" scrolling="no" style="border:none;"
+ src="https://www.download-mp3-youtube.com/api/?api_key=MjM5NTExNjAx&format=mp3&video_id=<%=@video_id%>&button_color=dddddd&text_color=444444"></iframe>
+<!--End Download Button -->
+</center>
+<%end%>
