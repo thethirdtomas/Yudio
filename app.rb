@@ -1,6 +1,7 @@
 require "sinatra"
 require 'sinatra/flash'
 require_relative "authentication.rb"
+require_relative "validation.rb"
 
 #the following urls are included in authentication.rb
 # GET /login
@@ -28,12 +29,13 @@ post "/process_download" do
 	
 	4.times do |x|
 		key = "url" + x.to_s
-		if params[key] != ""
+		if valid_url(params[key])
 			urls.push(params[key])
 		end
 	end
 	
-	if urls.empty?
+
+	if urls.empty? 
 		flash[:error] = "Please enter a Youtube URL "
 	else
 		flash[:success] = "Will download in the future"
