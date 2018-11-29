@@ -2,6 +2,7 @@ require "sinatra"
 require 'sinatra/flash'
 require_relative "authentication.rb"
 require_relative "validation.rb"
+require_relative 'download.rb'
 
 #the following urls are included in authentication.rb
 # GET /login
@@ -30,7 +31,7 @@ post "/process_download" do
 	4.times do |x|
 		key = "url" + x.to_s
 		if valid_url(params[key])
-			urls.push(params[key])
+			download_mp3(params[key])
 		end
 	end
 	
