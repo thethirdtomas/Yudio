@@ -1,19 +1,21 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
 
 #convert-button{
-    background-color: #B0B6CC;
-    border-color: #B0B6CC;
+    background-color: #199AAF;
     margin-left: 5px;
 }
 #jumbo-header{
     border-radius: 10px;
-    background-color: #B0B6CC;
     color: white;
-    font-family: josefin sans;
+    background-image: url('https://hdbackgroundspot.com//storage/upload/cool-background-designs/cool-background-designs-26.jpg');
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    font-family: Courier New;
 }
 
 #inputGroup-sizing-lg{
-    background-color: #B0B6CC;
+    background-color: #199AAF;
     color: white;
 }
 

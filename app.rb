@@ -30,7 +30,7 @@ post "/process_download" do
 	
 	if valid_url(params[:url])
 		video_id = get_video_id(params[:url])
-		flash[:success] = "MP3 download ready"
+		flash[:success] = "Click on the link below to begin downloading MP3"
 		redirect "/?download_ready=true&video_id=#{video_id}"
 	else
 		flash[:error] = "Please enter a Youtube URL "
