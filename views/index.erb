@@ -27,8 +27,7 @@
 <%if @download_ready%>
 <!-- Download button -->
 <center>
-<iframe width="220px" height="50px" scrolling="no" style="border:none;"
- src="https://www.download-mp3-youtube.com/api/?api_key=MjM5NTExNjAx&format=mp3&video_id=<%=@video_id%>&button_color=dddddd&text_color=444444"></iframe>
+<a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=@video_url%>" role="button" class="btn btn-success" id= "download-button">Download</a>
 <!--End Download Button -->
 </center>
 <%end%>

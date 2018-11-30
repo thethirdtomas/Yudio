@@ -9,6 +9,8 @@ require_relative "validation.rb"
 # GET /sign_up
 
 enable :sessions
+set :bind, '0.0.0.0'
+
 if User.all(type: 2).count == 0
 	u = User.new
 	u.email = "admin@admin.com"
@@ -22,16 +24,16 @@ end
 
 get "/" do
 	@download_ready = params["download_ready"]
-	@video_id = params["video_id"]
+	@video_url = params["video_url"]
 	erb :index
 end
 
 post "/process_download" do
 	
 	if valid_url(params[:url])
-		video_id = get_video_id(params[:url])
+		video_url = params[:url]
 		flash[:success] = "Click on the link below to begin downloading MP3"
-		redirect "/?download_ready=true&video_id=#{video_id}"
+		redirect "/?download_ready=true&video_url=#{video_url}"
 	else
 		flash[:error] = "Please enter a Youtube URL "
 		redirect "/"
