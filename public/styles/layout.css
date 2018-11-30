@@ -21,5 +21,14 @@
 
 #download-button{
     color: white;
+    text-align: center;
 }
-    
+
+
+#load-gif {
+    margin-left: 10px;
+    visibility:hidden;
+	position: fixed;
+	width: 50px;
+	height: 50px;   
+}

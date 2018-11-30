@@ -24,10 +24,12 @@
 </div>
 <!-- End URL Form -->
 
-<%if @download_ready%>
 <!-- Download button -->
-<center>
-<a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=@video_url%>" role="button" class="btn btn-success" id= "download-button">Download</a>
-<!--End Download Button -->
-</center>
+<%if @download_ready%>
+<div class="container" id="download-button">
+<a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=@video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
+<img src="images/load.gif" id="load-gif">
+</div>
 <%end%>
+<!--End Download Button -->
+
