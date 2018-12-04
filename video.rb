@@ -14,6 +14,7 @@ class Video
     property :id, Serial
     property :created_at, DateTime
     property :library_id, Integer
+    property :title, String
     property :video_url, String
 end
 

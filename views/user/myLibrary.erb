@@ -6,3 +6,25 @@
 <% elsif current_user.type ==2 %>
     <h2>Admin User!</h2>
 <% end %>
+
+<br>
+<hr>
+<br>
+
+<% def youtube_embed(youtube_url)
+  if youtube_url[/youtu\.be\/([^\?]*)/]
+    youtube_id = $1
+  else
+    # Regex from # http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url/4811367#4811367
+    youtube_url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
+    youtube_id = $5
+  end
+  %Q{<iframe title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
+end%>
+
+<% current_user().getLibrary().getVideos().each do |video| %>
+  <div class="container">
+    <h4><%=video.video_url%></h4>
+    <p><%=youtube_embed(video.video_url)%></p>
+  </div>
+<% end %>
