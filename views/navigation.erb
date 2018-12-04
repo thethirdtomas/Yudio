@@ -3,15 +3,18 @@
   <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
   Yudio
   </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+  <% if current_user %>
+    <h4 style="color:gray;">Welcome, <%= current_user.email %></h4>
+  <% end %>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#userMenu" aria-controls="userMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+  <div class="collapse navbar-collapse" id="userMenu">
     <ul class="navbar-nav ml-auto">
       <% if current_user %>
         <li class="nav-item">
-          <a class="nav-link" href="/dashboard">Dashboard</a>
+          <a class="nav-link" href="/my_library">My Library</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
