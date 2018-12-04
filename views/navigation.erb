@@ -1,34 +1,42 @@
 <nav class="navbar navbar-expand-md navbar-dark static-top bg-dark ">
   <a class="navbar-brand" href="/">
-  <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
-  Yudio
+    <img src="images/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
+    Yudio
   </a>
   <% if current_user %>
-    <h4 style="color:gray;">Welcome, <%= current_user.email %></h4>
+  <h4 style="color:gray;">Welcome,
+    <%= current_user.email %>
+  </h4>
   <% end %>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#userMenu" aria-controls="userMenu" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#userMenu" aria-controls="userMenu"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="userMenu">
     <ul class="navbar-nav ml-auto">
       <% if current_user %>
-        <li class="nav-item">
-          <a class="nav-link" href="/my_library">My Library</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
+      <% if current_user.type == 0 %>
+      <li class="nav-item">
+        <a href="/upgrade"><button class ="btn btn-primary">Upgrade!</button></a>
+      </li>
+      <% end %>
+      <li class="nav-item">
+        <a class="nav-link" href="/my_library">My Library</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/logout">Logout</a>
+      </li>
       <% else %>
-        <li class="nav-item">
-          <a class="nav-link" href="/login">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/create_account">Create Account</a>
-        </li>
-       
+      <li class="nav-item">
+        <a class="nav-link" href="/login">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/create_account">Create Account</a>
+      </li>
+
       <% end %>
     </ul>
-    
+
   </div>
 </nav>

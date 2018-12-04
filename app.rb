@@ -1,12 +1,19 @@
 require "sinatra"
+require "stripe"
 require 'sinatra/flash'
 require_relative "authentication.rb"
 require_relative "validation.rb"
+
 
 #the following urls are included in authentication.rb
 # GET /login
 # GET /logout
 # GET /sign_up
+
+set :publishable_key, ENV['PUBLISHABLE_KEY']
+set :secret_key, ENV['SECRET_KEY']
+
+Stripe.api_key = settings.secret_key
 
 enable :sessions
 set :bind, '0.0.0.0'
@@ -19,9 +26,9 @@ if User.all(type: 2).count == 0
 	u.type = 2
 	u.save
 
-	l = Library.new
-	l = u.id
-	l.save
+	lib = Library.new
+	lib.user_id = u.id
+	lib.save
 end
 # authenticate! will make sure that the user is signed in, if they are not they will be redirected to the login page
 # if the user is signed in, current_user will refer to the signed in user object.
@@ -49,3 +56,31 @@ post "/process_download" do
 		redirect "/"
 	end
 end
+
+get "/upgrade" do
+	authenticate!
+	if current_user && current_user.type < 1
+		erb :"/user/upgrade"
+	else
+		redirect "/"
+	end
+end
+
+post '/charge' do
+	# Amount in cents 
+	@amount = 500
+	customer = Stripe::Customer.create(
+	  :email => 'customer@example.com',
+	  :source  => params[:stripeToken]
+	)
+  
+	charge = Stripe::Charge.create(
+	  :amount      => @amount,
+	  :description => 'Sinatra Charge',
+	  :currency    => 'usd',
+	  :customer    => customer.id
+	)
+	current_user.pro = true
+	current_user.save
+	erb :charge
+  end

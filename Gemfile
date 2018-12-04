@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 gem 'sinatra'
+gem 'stripe'
 gem 'data_mapper'
 gem 'sinatra-flash'
 group :development do

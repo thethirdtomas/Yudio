@@ -22,6 +22,11 @@ class User
     def login(password)
     	return self.password == password
     end
+    
+    def getLibrary()
+      @lib ||= Library.first(:user_id => self.id)
+      return @lib
+    end
 end
 
 # Perform basic sanity checks and initialize all relationships

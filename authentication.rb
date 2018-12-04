@@ -1,6 +1,7 @@
 require 'sinatra'
 require_relative "user.rb"
 require_relative "library.rb"
+require_relative 'video.rb'
 
 enable :sessions
 
@@ -71,5 +72,12 @@ end
 def authenticate!
 	if !current_user
 		redirect "/login"
+	end
+end
+
+def admin!
+	authenticate!
+	if current_user.type != 2
+		redirect "/"
 	end
 end

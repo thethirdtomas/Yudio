@@ -11,25 +11,26 @@
 
 <!-- URL Form -->
 <div class="container" id="url_forms" >
-<form action="process_download" method="POST">
-<div class="input-group input-group-lg">
-  <div class="input-group-prepend">
-    <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
-  </div>
-  <input type="text" name="url" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-  <button type="submit" class="btn btn-info" id="convert-button">Convert</button>
-</div>
-<br />
-</form>
+  <form action="process_download" method="POST">
+    <div class="input-group input-group-lg">
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-lg">URL</span>
+      </div>
+      
+      <input type="text" name="url" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
+      <button type="submit" class="btn btn-info" id="convert-button">Convert</button>
+    </div>
+    <br />
+  </form>
 </div>
 <!-- End URL Form -->
 
 <!-- Download button -->
 <%if @download_ready%>
-<div class="container" id="download-button">
-<a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=@video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
-<img src="images/load.gif" id="load-gif">
-</div>
+  <div class="container" id="download-button">
+    <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=@video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
+    <img src="images/load.gif" id="load-gif">
+  </div>
 <%end%>
 <!--End Download Button -->
 

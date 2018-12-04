@@ -1,0 +1,7 @@
+<h1>Free User!</h1>
+<% remaining = 5 - current_user.getLibrary().videoCount()%>
+<% if current_user.getLibrary().videoCap?() %>
+  <h3>You have reached your limit!</h3>
+<% else %>
+  <h3>You can add <%= remaining %> more songs to your free library.</h3>
+<% end %>

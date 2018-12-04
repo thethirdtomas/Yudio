@@ -9,25 +9,12 @@ else
   DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/app.db")
 end
 
-class Library
+class Video
     include DataMapper::Resource
     property :id, Serial
-    property :user_id, Integer
     property :created_at, DateTime
-    def getVideos()
-      @videos = Video.all(:library_id => self.id)
-      return @videos
-    end
-
-    def videoCount()
-      return self.getVideos().count()
-    end
-
-    def videoCap?()
-      userType = User.get(self.user_id).type
-      #If the User is Free and they have 5 videos stored, they have reached their cap.
-      return (userType == 0 && self.videoCount() == 5)
-    end
+    property :library_id, Integer
+    property :video_url, String
 end
 
 # Perform basic sanity checks and initialize all relationships
@@ -35,5 +22,5 @@ end
 DataMapper.finalize
 
 # automatically create the post table
-Library.auto_upgrade!
+Video.auto_upgrade!
 
