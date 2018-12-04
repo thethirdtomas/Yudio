@@ -13,6 +13,7 @@ class User
     include DataMapper::Resource
     property :id, Serial
     property :email, String
+    property :name, String
     property :password, String
     property :created_at, DateTime
     # 0 : Normal User, 1 : Pro User, 2 : Admin User

@@ -1,5 +1,6 @@
 require 'sinatra'
 require_relative "user.rb"
+require_relative "library.rb"
 
 enable :sessions
 
@@ -36,16 +37,21 @@ end
 
 
 post "/register" do
+	name = params[:name]
 	email = params[:email]
 	password = params[:password]
 
 	u = User.new
+	u.name = name
 	u.email = email.downcase
 	u.password =  password
 	u.save
 
 	session[:user_id] = u.id
 
+	lib = Library.new
+	lib.user_id = u.id
+	lib.save
 	erb :"authentication/successful_signup"
 
 end
