@@ -24,7 +24,11 @@ end%>
 
 <% current_user().getLibrary().getVideos().each do |video| %>
   <div class="container">
-    <h4><%=video.video_url%></h4>
+    <h4><%=video.title%></h4>
     <p><%=youtube_embed(video.video_url)%></p>
+    <div class="container" id="download-button">
+      <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
+    <img src="images/load.gif" id="load-gif">
+  </div>
   </div>
 <% end %>
