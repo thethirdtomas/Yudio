@@ -1,7 +1,23 @@
+<!--
 <div class = "container">
 	<form action="/videos/create" method="POST">
 		Title: <input type="text" name="title"><br/>
 		Video URL: <input type="text" name="video_url"><br/>
 		<input type="submit" value="Create Video">
+	</form>
+</div>
+-->
+<div class="container">
+	<h2>Add Video To Library</h2>
+	<form action ="/videos/create" method ="POST">
+		<div class="form-group">
+			<input name="title" type="text" class="form-control" id="title" aria-describedby="videoHelp" placeholder="Title">
+			
+		</div>
+		<div class="form-group">
+			<input name="video_url" type="text" class="form-control" id="video" placeholder="Video URL">
+			<small id="urlHelp" class="form-text text-muted">Currently Only Supporting Youtube Videos.</small>
+		</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
 </div>

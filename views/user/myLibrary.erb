@@ -9,6 +9,9 @@
 <% end %>
 
 <br>
+<% if !(current_user.getLibrary.videoCap?) %>
+  <a href="/videos/new"><button class="btn btn-primary">Add Song</button></a>
+<% end %>
 <hr>
 <br>
 
@@ -23,17 +26,12 @@
   %Q{<iframe title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
 end %>
 
-<% if !(current_user.getLibrary.videoCap?) %>
-  <a href="/videos/new"><button class="btn btn-primary">Add Song</button></a>
-<% end %>
+
 
 <% current_user.getLibrary.getVideos.each do |video| %>
   <div class="container">
+    <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
     <h4><%=video.title%></h4>
     <p><%=youtube_embed(video.video_url)%></p>
-    <div class="container" id="download-button">
-        <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
-        <!--<img src="images/load.gif" id="load-gif">-->
-    </div>
   </div>
 <% end %>

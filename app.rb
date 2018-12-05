@@ -82,22 +82,22 @@ post '/charge' do
 	)
 	current_user.type = 1
 	current_user.save
-	erb :"user/myLibrary"
+	redirect "my_library"
 end
 
 get "/videos/new" do
 	erb :"videos/new"
 end
-post  "/videos/create" do
+post "/videos/create" do
 	authenticate!
 	if current_user.getLibrary().videoCap?()
-		redirect "user/myLibrary"
+		redirect "my_library"
 	else
 		newVid = Video.new
 		newVid.library_id = current_user.getLibrary().id
 		newVid.title = params['title'] if params['title']
 		newVid.video_url = params['video_url'] if params['video_url']
 		newVid.save
-		erb :"user/myLibrary"
+		redirect "my_library"
 	end
 end
