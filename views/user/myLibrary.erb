@@ -1,8 +1,9 @@
 <h1>Library of your stored songs</h1>
+
 <% if current_user.type == 0 %>
     <%= erb :"user/freeLibrary" %>
 <% elsif current_user.type==1 %>
-    <%= erb :proLibrary %>
+    <%= erb :"user/proLibrary" %>
 <% elsif current_user.type ==2 %>
     <h2>Admin User!</h2>
 <% end %>
@@ -12,23 +13,27 @@
 <br>
 
 <% def youtube_embed(youtube_url)
-  if youtube_url[/youtu\.be\/([^\?]*)/]
-    youtube_id = $1
-  else
-    # Regex from # http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url/4811367#4811367
-    youtube_url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
-    youtube_id = $5
-  end
+    if youtube_url[/youtu\.be\/([^\?]*)/]
+      youtube_id = $1
+    else
+      # Regex from # http://stackoverflow.com/questions/3452546/javascript-regex-how-to-get-youtube-video-id-from-url/4811367#4811367
+      youtube_url[/^.*((v\/)|(embed\/)|(watch\?))\??v?=?([^\&\?]*).*/]
+      youtube_id = $5
+    end
   %Q{<iframe title="YouTube video player" width="640" height="390" src="https://www.youtube.com/embed/#{ youtube_id }" frameborder="0" allowfullscreen></iframe>}
-end%>
+end %>
 
-<% current_user().getLibrary().getVideos().each do |video| %>
+<% if !(current_user.getLibrary.videoCap?) %>
+  <a href="/videos/new"><button class="btn btn-primary">Add Song</button></a>
+<% end %>
+
+<% current_user.getLibrary.getVideos.each do |video| %>
   <div class="container">
     <h4><%=video.title%></h4>
     <p><%=youtube_embed(video.video_url)%></p>
     <div class="container" id="download-button">
-      <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
-    <img src="images/load.gif" id="load-gif">
-  </div>
+        <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
+        <!--<img src="images/load.gif" id="load-gif">-->
+    </div>
   </div>
 <% end %>

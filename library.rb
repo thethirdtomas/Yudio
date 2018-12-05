@@ -26,6 +26,7 @@ class Library
     def videoCap?()
       userType = User.get(self.user_id).type
       #If the User is Free and they have 5 videos stored, they have reached their cap.
+      #Return true if cap is reached.
       return (userType == 0 && self.videoCount() == 5)
     end
 end

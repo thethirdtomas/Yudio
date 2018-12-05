@@ -80,7 +80,24 @@ post '/charge' do
 	  :currency    => 'usd',
 	  :customer    => customer.id
 	)
-	current_user.pro = true
+	current_user.type = 1
 	current_user.save
-	erb :charge
-  end
+	erb :"user/myLibrary"
+end
+
+get "/videos/new" do
+	erb :"videos/new"
+end
+post  "/videos/create" do
+	authenticate!
+	if current_user.getLibrary().videoCap?()
+		redirect "user/myLibrary"
+	else
+		newVid = Video.new
+		newVid.library_id = current_user.getLibrary().id
+		newVid.title = params['title'] if params['title']
+		newVid.video_url = params['video_url'] if params['video_url']
+		newVid.save
+		erb :"user/myLibrary"
+	end
+end
