@@ -30,8 +30,8 @@ end %>
 
 <% current_user.getLibrary.getVideos.each do |video| %>
   <div class="container">
-    <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
     <h4><%=video.title%></h4>
+    <a href="http://104.248.225.168:5000/?api_key=1040412&url=<%=video.video_url%>" role="button" class="btn btn-success" onclick="showImage();">Download</a>
     <p><%=youtube_embed(video.video_url)%></p>
   </div>
 <% end %>

@@ -1,6 +1,21 @@
-<form action="register" method="POST">
-	Name: <input type="text" name="name">
-	Email: <input type="text" name="email"><br/>
-	Password: <input type="password" name="password"><br/>
-	<input type="submit" value="Register">
-</form>
+<div class="container">
+	<h2>Welcome! Please Create Your Free Account</h2>
+	<form action="/register" method="POST">
+	<div class="row">
+		<div class="form-group col-auto">
+			<input name="name" type="text" class="form-control" id="name" aria-describedby="videoHelp" placeholder="Name">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-auto">
+			<input name="email" type="text" class="form-control" id="email" aria-describedby="videoHelp" placeholder="Email">
+		</div>
+	</div>
+	<div class="row">
+		<div class="form-group col-auto">
+			<input name="password" type="password" class="form-control" id="password" placeholder="Password">
+		</div>
+	</div>
+		<button type="submit" class="btn btn-primary">Submit</button>
+	</form>
+</div>
