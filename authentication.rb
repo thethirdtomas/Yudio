@@ -53,7 +53,7 @@ post "/register" do
 	lib = Library.new
 	lib.user_id = u.id
 	lib.save
-	erb :"authentication/successful_signup"
+	erb :"user/myLibrary"
 
 end
 
