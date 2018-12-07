@@ -32,3 +32,19 @@
 	width: 50px;
 	height: 50px;   
 }
+
+#footer
+{
+    clear: both;
+    border: 1px groove #aaaaaa;
+    background: rgb(32, 32, 32);
+    color: White;
+    padding: 0;
+    text-align: center;
+    vertical-align: middle;
+    line-height: normal;
+    margin: 0;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
