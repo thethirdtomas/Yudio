@@ -85,10 +85,10 @@ post '/charge' do
 	redirect "my_library"
 end
 
-get "/videos/new" do
+get "/new" do
 	erb :"videos/new"
 end
-post "/videos/create" do
+post "/create" do
 	authenticate!
 	if current_user.getLibrary().videoCap?()
 		redirect "my_library"
