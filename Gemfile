@@ -10,6 +10,8 @@ gem 'httparty', '~> 0.13.7'
 
 gem 'openssl', '~> 2.0.0.beta.1'
 
+gem 'lyricfy', '~> 0.1.0'
+
 group :development do
   gem "sqlite3-ruby"
   gem "dm-sqlite-adapter"
