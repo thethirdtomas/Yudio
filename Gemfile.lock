@@ -1,14 +1,25 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    activesupport (5.2.2)
+      concurrent-ruby (~> 1.0, >= 1.0.2)
+      i18n (>= 0.7, < 2)
+      minitest (~> 5.1)
+      tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    autoparse (0.3.3)
+      addressable (>= 2.3.1)
+      extlib (>= 0.9.15)
+      multi_json (>= 1.0.0)
     bcrypt (3.1.11)
     bcrypt (3.1.11-x86-mingw32)
     bcrypt-ruby (3.1.5)
       bcrypt (>= 3.1.3)
     bcrypt-ruby (3.1.5-x86-mingw32)
       bcrypt (>= 3.1.3)
+    certified (1.0.0)
+    concurrent-ruby (1.1.3)
     connection_pool (2.2.2)
     data_mapper (1.2.0)
       dm-aggregates (~> 1.2.0)
@@ -67,11 +78,30 @@ GEM
       data_objects (= 0.10.17)
     do_sqlite3 (0.10.17-x86-mingw32)
       data_objects (= 0.10.17)
+    extlib (0.9.16)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     fastercsv (1.5.5)
+    google-api-client (0.7.1)
+      addressable (>= 2.3.2)
+      autoparse (>= 0.3.3)
+      extlib (>= 0.9.15)
+      faraday (>= 0.9.0)
+      jwt (>= 0.1.5)
+      launchy (>= 2.1.1)
+      multi_json (>= 1.0.0)
+      retriable (>= 1.4)
+      signet (>= 0.5.0)
+      uuidtools (>= 2.1.0)
+    hurley (0.2)
+    i18n (1.2.0)
+      concurrent-ruby (~> 1.0)
     json (1.8.6)
     json_pure (1.8.6)
+    jwt (2.1.0)
+    launchy (2.4.3)
+      addressable (~> 2.3)
+    minitest (5.11.3)
     multi_json (1.13.1)
     multipart-post (2.0.0)
     mustermann (1.0.2)
@@ -79,10 +109,16 @@ GEM
       connection_pool (~> 2.2)
     pg (1.0.0)
     pg (1.0.0-x86-mingw32)
-    public_suffix (3.0.2)
+    public_suffix (3.0.3)
     rack (2.0.4)
     rack-protection (2.0.1)
       rack
+    retriable (3.1.2)
+    signet (0.11.0)
+      addressable (~> 2.3)
+      faraday (~> 0.9)
+      jwt (>= 1.5, < 3.0)
+      multi_json (~> 1.10)
     sinatra (2.0.1)
       mustermann (~> 1.0)
       rack (~> 2.0)
@@ -98,22 +134,31 @@ GEM
     stripe (4.2.0)
       faraday (~> 0.13)
       net-http-persistent (~> 3.0)
+    thread_safe (0.3.6)
     tilt (2.0.8)
+    tzinfo (1.2.5)
+      thread_safe (~> 0.1)
     uuidtools (2.1.5)
+    yt (0.28.5)
+      activesupport
 
 PLATFORMS
   ruby
   x86-mingw32
 
 DEPENDENCIES
+  certified (~> 1.0)
   data_mapper
   dm-postgres-adapter
   dm-sqlite-adapter
+  google-api-client (~> 0.7.1)
+  hurley (~> 0.1)
   pg
   sinatra
   sinatra-flash
   sqlite3-ruby
   stripe
+  yt (~> 0.28.0)
 
 BUNDLED WITH
-   1.16.5
+   1.17.1
