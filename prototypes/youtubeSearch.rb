@@ -5,64 +5,58 @@ require 'uri'
 require 'json'
 require 'httparty'
 
-url = "https://www.googleapis.com/youtube/v3/search?key=AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8&maxResults=3&order=relevance&part=snippet&q=24+karot+gold+by+bruno+mars&relevanceLanguage=en&safeSearch=none&type=video"
+# youtube data public key from Bryan Cancel's Google Developer Console
+# AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8
+key = "AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8"
 
-uir = URI(url)
-response = Net::HTTP.get(url)
-puts JSON.parse(response)
+# youtube list parameters link below
+# https://developers.google.com/youtube/v3/docs/videos/list
 
-=begin
+def makeQueryString song, album, artist
+    string = song
+    if(string.nil? == false)
+        string += " from "
+    end
+    string += album
+    if(string.nil? == false)
+        string += " by "
+    end
+    string += artist
+    return string
+end
+
+# set your parameters
+maxResults = 3
+order = "relevance"
+part = "snippet"
+query = makeQueryString "24 karot gold", "24K Magic", "Bruno Mars"
+relevanceLanguage = "en"
+safeSearch = "none"
+type = "video"
+
+# print query
+puts "searching " + query
+
+# url is constructed with those params
+url = "https://www.googleapis.com/youtube/v3/search?key=" + key + 
+"&maxResults=" + maxResults.to_s +
+"&order=" + order +
+"&part=" + part +
+"&q=" + URI::encode(query) +
+"&relevanceLanguage=" + relevanceLanguage +
+"&safeSearch=" + safeSearch +
+"&type=" + type
+
+# grab json file that the url outputs
 response = HTTParty.get(url)
-puts response.parsed_response
-=end
+json = response.parsed_response
+videos = json["items"]
 
-=begin
-uri = URI.parse("https://www.googleapis.com/youtube/v3/search?key=AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8&maxResults=3&order=relevance&part=snippet&q=24+karot+gold+by+bruno+mars&relevanceLanguage=en&safeSearch=none&type=video")
-request = Net::HTTP::Get.new(uri)
-request["Content-Length"] = "0"
-request["User-Agent"] = "Yt::Request (gzip)"
-
-req_options = {
-  use_ssl: uri.scheme == "https",
+# print the important parts of this json file
+videos.each{ |video|
+    puts("\n")
+    puts("video id: =>" + video["id"]["videoId"] + "\n")
+    puts("video title =>" + video["snippet"]["title"] + "\n")
+    puts("video description =>" + video["snippet"]["description"] + "\n")
+    puts("thumb nails =>" + video["snippet"]["thumbnails"].to_json + "\n")
 }
-# puts(request)
-puts(JSON.parse(request))
-
-response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
-  http.request(request)
-end
-
-puts(response)
-puts(JSON.parse(response))
-=end
-
-=begin
-Yt.configure do |config|
-	config.api_key = 'AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8'
-	config.log_level = :debug
-end
-
-videos = Yt::Collections::Videos.new
-
-videoList = videos.where(
-	q: '24 karot gold by bruno mars',
-	max_results: '3',
-	order: 'relevance',
-	relevanceLanguage: 'en',
-	safeSearch: 'none',
-	type: 'video',
-	part: 'snippet',
-)
-
-youtubeLinkBase = "https://www.youtube.com/watch?v="
-# from id get videoId (Ex: 8s9PhFW1ow8)
-
-# get the above from returned json file
-
-puts("done start")
-
-videoList.each do |x|
-    puts("d")
-end
-=end
-puts("done end")
