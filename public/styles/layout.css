@@ -49,18 +49,23 @@
     width: 100%;
 }
 
-#buttonCont {
-    padding: 10px;
-}
-
 .btn-circle.btn-xl {
-    width: 230px;
-    height: 230px;
+    width: 150px;
+    height: 150px;
     margin-left: auto;
     margin-right: auto;
     background-color: rgba(0, 0, 0, 0.75);
     color: white;
     border-radius: 50%;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: 50% !important;
+    line-height: 100% !important;
 }
 
 /*-----*/

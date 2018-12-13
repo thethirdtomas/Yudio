@@ -1,4 +1,19 @@
 $( document ).ready(function() {
+    //mappings known from ARCCloud API
+    var errorCodeToError = {
+        "1001" : `Sorry, we could not 
+                <br> recognize the song`,
+        "2000" : `Sorry, we could not 
+                <br> record, the recording 
+                <br> device might not have 
+                <br> the required permissions`,
+        "3000" : `Sorry, the recognizer broke`,
+        "2005" : `Sorry, the search timed out`,
+        "2004" : `Sorry, we were not able to 
+                <br> generate the song's fingerprint`,
+        "2002" : `Sorry, there was a parsing error`
+    }
+
     //variables that will let us save recorded audio
     var userMedia = ""
     var mediaRecorder = ""
@@ -79,6 +94,9 @@ $( document ).ready(function() {
         $(recordAudio).find("i").addClass(((recording) ? start : stop))
         recording = !recording
 
+        //hide all errors
+        $("#songIdentifierError").hide()
+
         //start recording
         if(recording) mediaRecorder.start()
         else{ //stop recording
@@ -115,7 +133,50 @@ $( document ).ready(function() {
                         contentType: false,
                         processData: false,
                         success: function (response) {
-                            console.log(response)
+                            //error code documentation
+                            //https://www.acrcloud.com/docs/acrcloud/metadata/error-codes/
+
+                            //json file documentation
+                            //https://www.acrcloud.com/docs/acrcloud/metadata/music-acrbm/
+
+                            response = JSON.parse(response)
+
+                            retreivedError = response['status']['code']
+                            if(retreivedError == "0"){
+                                //hide potentially visible errors
+                                $("#songIdentifierError").hide()
+
+                                //grab all data from json
+                                retreivedSongName = response['metadata']['music'][0]['title']
+                                retreivedAlbumName = response['metadata']['music'][0]['album']['name']
+                                //only grab main artist
+                                retreivedArtistsNames = response['metadata']['music'][0]['artists'][0]['name']
+
+                                /*
+                                //code to grab all artists
+                                var len = (response['metadata']['music'][0]['artists']).length
+                                var index
+                                for(index = 0; index < len; index++){
+                                    var artist = response['metadata']['music'][0]['artists'][index]['name']
+                                    if(index == 0) retreivedArtistsNames += artist
+                                    else retreivedArtistsNames += " and " + artist
+                                }
+                                */
+
+                                //set the field
+                                $("#songName").val(retreivedSongName)
+                                $("#albumName").val(retreivedAlbumName)
+                                $("#artistName").val(retreivedArtistsNames)
+
+                                //trick the other js file to run its scripts
+                                $("#artistName").select()
+                                $("#artistName").blur()
+                            }
+                            else{
+                                //make sure errors are visible
+                                $("#songIdentifierError").show()
+                                $("#songIdentifierError").html(errorCodeToError[retreivedError])
+                            }
                         }
                     });
                 }

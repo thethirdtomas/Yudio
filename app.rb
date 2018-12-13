@@ -81,10 +81,13 @@ post "/downloadFile" do
 		res = Net::HTTP.start(url.host, url.port) do |http|
 			http.request(req)
 		end
-		puts(res.body)
-	end
 
-	return "hi"
+		puts "-----\n"
+		puts res.body
+		puts "-----\n"
+
+		return res.body
+	end
 end
 
 # define function to easily generate a query string based on params
