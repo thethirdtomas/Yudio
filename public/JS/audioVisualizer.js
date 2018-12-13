@@ -59,7 +59,7 @@ $( document ).ready(function() {
                               null;*/
     navigator.getUserMedia({audio:true}, soundDesired, soundNotAllowed)
 
-    navigator.mediaDevices.getUserMedia({audio:true}).then((stream) => {
+    navigator.mediaDevices.getUserMedia({audio:true, mimeType: 'audio/webm'}).then((stream) => {
         //create a recorder that is available for manuipulation
         mediaRecorder = new MediaRecorder(stream)
 
@@ -84,27 +84,61 @@ $( document ).ready(function() {
         else{ //stop recording
             mediaRecorder.stop()
 
-            //audio chunk conversion
-            const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' })
-            const audioUrl = (window.URL || window.webkitURL).createObjectURL(audioBlob)
+            //use time with a wait of 0 simply to allow stop to finish before running
+            //this way we are guaranteeed to grab our audioChunk
+            setTimeout(function(){ 
 
-            //send data as form data (you can send audioBlobs any other way)
-            var data = new FormData();
-            data.append('audioBlob', audioBlob)
-            data.append('audioUrl', audioUrl)
-            data.append('blobName', (new Date()).getTime() + ".webm")
+                console.log("audio chunks " + audioChunks.length)
 
-            //run the ajax call to download the file to the server
-            $.ajax({
-                url: "/downloadFile",
-                type: 'POST',
-                data: data,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    console.log(response)
+                //audio chunk conversion
+                const audioBlob = new Blob(audioChunks)
+                const audioUrl = (window.URL || window.webkitURL).createObjectURL(audioBlob)
+
+                //convert something into a blob
+                var reader  = new window.FileReader();
+                var savedBlob = ""
+                reader.onloadend = function() {
+                    var base64data = reader.result;
+                    savedBlob = base64data
+                    console.log(savedBlob);
+
+                    //---start
+
+                    //send data as form data (you can send audioBlobs any other way)
+                    var data = new FormData();
+                    data.append('audioBlob', audioBlob)
+                    data.append('savedBlob', savedBlob)
+                    data.append('audioUrl', audioUrl)
+                    data.append('blobName', (new Date()).getTime() + ".webm")
+
+                    //print the audio blob
+                    /*
+                    var myReader = new FileReader();
+                    myReader.onload = function(event){
+                        console.log("audio blob: " + JSON.stringify(myReader.result));
+                    };
+                    myReader.readAsText(audioBlob)
+                    */
+
+                    //print audio blob url
+                    console.log("audio url: " + audioUrl)
+
+                    //run the ajax call to download the file to the server
+                    $.ajax({
+                        url: "/downloadFile",
+                        type: 'POST',
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            console.log(response)
+                        }
+                    });
+
+                    //---end
                 }
-            });
+                reader.readAsDataURL(audioBlob); 
+            }, 0);
         }
     })
 })

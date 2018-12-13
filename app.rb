@@ -24,25 +24,29 @@ require_relative "validation.rb"
 post "/downloadFile" do
 	# grab the params
 	audioBlob = params[:audioBlob]
+	savedBlob = params[:savedBlob]
 	audioUrl = params[:audioUrl]
 	blobName = params[:blobName]
 
 	# get or create save path
-	save_path = "public/audio" # Rails.root.join("public/audio")
+	save_path = "public/audio/" 
 	unless File.exists?(save_path)
 		Dir::mkdir(save_path)
 	end
 
-	# rewind the audio file to the begining
-	# audioBlob.rewind
+	puts "-------------------------directory found or created"
 
-	puts "-------------------------audio blob rewound"
+	audio_data=Base64.decode64(savedBlob['data:audio/webm; base64,'.length .. -1])
+	File.open(save_path + blobName, 'wb') do |f| 
+		f.write audio_data 
+	end
+	current_user.user_detail.audio=File.open(save_path + blobName)
+	current_user.user_detail.audio_content_type="application/octet-stream"
 
 	# Open and write the file to file system.
-	File.open(save_path + "/" + blobName, 'wb') do |f|
-		audioBlob.rewind
-		f.write audioBlob.read
-	end
+	# File.open(save_path, 'wb') do |f|
+	# 	f.write savedBlob.read
+	# end
 	
 	return "file downloaded"
 end
