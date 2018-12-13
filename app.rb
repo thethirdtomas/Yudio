@@ -3,6 +3,7 @@ require "stripe"
 require 'sinatra/flash'
 require 'json'
 require 'lyricfy'
+require 'base64'
 
 # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 ENV['SSL_CERT_FILE'] = './cacert.pem'
@@ -19,6 +20,32 @@ key = "AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8"
 
 require_relative "authentication.rb"
 require_relative "validation.rb"
+
+post "/downloadFile" do
+	# grab the params
+	audioBlob = params[:audioBlob]
+	audioUrl = params[:audioUrl]
+	blobName = params[:blobName]
+
+	# get or create save path
+	save_path = "public/audio" # Rails.root.join("public/audio")
+	unless File.exists?(save_path)
+		Dir::mkdir(save_path)
+	end
+
+	# rewind the audio file to the begining
+	# audioBlob.rewind
+
+	puts "-------------------------audio blob rewound"
+
+	# Open and write the file to file system.
+	File.open(save_path + "/" + blobName, 'wb') do |f|
+		audioBlob.rewind
+		f.write audioBlob.read
+	end
+	
+	return "file downloaded"
+end
 
 # define function to easily generate a query string based on params
 def makeQueryString song, album, artist

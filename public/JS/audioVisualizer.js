@@ -86,19 +86,25 @@ $( document ).ready(function() {
 
             //audio chunk conversion
             const audioBlob = new Blob(audioChunks, { type: 'audio/mpeg' })
-            const audioUrl = URL.createObjectURL(audioBlob)
-            const audio = new Audio(audioUrl)
+            const audioUrl = (window.URL || window.webkitURL).createObjectURL(audioBlob)
 
-            console.log(audioUrl)
+            //send data as form data (you can send audioBlobs any other way)
+            var data = new FormData();
+            data.append('audioBlob', audioBlob)
+            data.append('audioUrl', audioUrl)
+            data.append('blobName', (new Date()).getTime() + ".webm")
 
-            //link hacking to save the file
-            var a = document.createElement('a')
-            document.body.appendChild(a)
-            a.style = 'display: none'
-            a.href = audioUrl
-            a.download = 'test.mp3'
-            a.click()
-            a.remove()
+            //run the ajax call to download the file to the server
+            $.ajax({
+                url: "/downloadFile",
+                type: 'POST',
+                data: data,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    console.log(response)
+                }
+            });
         }
     })
 })
