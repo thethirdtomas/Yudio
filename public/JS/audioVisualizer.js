@@ -202,6 +202,8 @@ $( document ).ready(function() {
         }
     }
 
+    var unlockTimeOut
+    var autoSubmitTimeOut
     $(recordAudio).on("click", function(){
         console.log("recording " + recording)
         if(recording == false){
@@ -216,27 +218,30 @@ $( document ).ready(function() {
 
             //automatically show a message if the user stop the mic within x milliseconds
             var millisecondsBeforeUnlock = 7000 //7 seconds
-            setTimeout(function(){ 
-                if(recording){
-                    //unlock the mic
-                    micLocked = false
-                    
-                    //tell user they can stop the recording
-                    micIndicator(false)
-                }
+            unlockTimeOut = setTimeout(function(){ 
+                //unlock the mic
+                micLocked = false
+                //tell user they can stop the recording
+                micIndicator(false)
             }, millisecondsBeforeUnlock)
 
             //automaticaly stop the mic after x milliseconds (at this point the larger file gives no benefits)
             var millisecondsBeforeAutoStop = 20000 //20 seconds
-            setTimeout(function(){ 
-                if(recording){
-                    //automatically stop the mic
-                    micSwitch()
-                }
+            autoSubmitTimeOut = setTimeout(function(){ 
+                micSwitch() //stop the mic
             }, millisecondsBeforeAutoStop)
         }
         else{ //DONT allow users to stop the recording since it needs to record for atleast 15 seconds
             if(micLocked) alert("We need atleast 7 seconds to identify the song")
+
+            //cancel timeout functions that run ONLY if this action does not take place
+            clearTimeout(unlockTimeOut)
+            clearTimeout(autoSubmitTimeOut)
+
+            //reset mic
+            micIndicator(false)
+
+            //stop the mic
             micSwitch()
         }
     })
