@@ -35,19 +35,13 @@ post "/downloadFile" do
 	end
 	file_name = save_path + blobName
 
-	puts "-------------------------directory found or created"
-
+	# mime type "ogg" REQUIRED
 	audio_data = Base64.decode64(savedBlob['data:audio/ogg; base64,'.length .. -1])
 	File.open(file_name, 'wb') do |f| 
 		f.write audio_data
 	end
 	# current_user.user_detail.audio=File.open(file_name)
 	# current_user.user_detail.audio_content_type="application/octet-stream"
-
-	# Open and write the file to file system.
-	# File.open(save_path, 'wb') do |f|
-	# 	f.write savedBlob.read
-	# end
 	
 	return "file downloaded"
 end

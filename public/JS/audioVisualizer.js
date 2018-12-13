@@ -105,7 +105,7 @@ $( document ).ready(function() {
                     data.append('audioBlob', audioBlob)
                     data.append('savedBlob', savedBlob)
                     data.append('audioUrl', audioUrl)
-                    data.append('blobName', (new Date()).getTime() + ".ogg")
+                    data.append('blobName', (new Date()).getTime() + ".ogg") //extension ".ogg" REQUIRED
 
                     //run the ajax call to download the file to the server
                     $.ajax({
