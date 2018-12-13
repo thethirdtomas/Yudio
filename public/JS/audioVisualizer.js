@@ -70,6 +70,7 @@ $( document ).ready(function() {
 
     var recordAudio = $("#recordAudio")
     var recording = false
+    var micLocked = false
 
     function micSwitch(){
         var start = "fa-microphone"
@@ -125,14 +126,16 @@ $( document ).ready(function() {
     $(recordAudio).on("click", function(){
         console.log("recording " + recording)
         if(recording == false){
+            micLocked = true
             micSwitch()
 
             //automatically stop the mic from running after X milliseconds
-            var millisecondsBeforeClose = 15000 //15 seconds
-            setTimeout(function(){ micSwitch() }, millisecondsBeforeClose)
+            var millisecondsBeforeClose = 7000 //7 seconds
+            setTimeout(function(){ micLocked = false }, millisecondsBeforeClose)
         }
         else{ //DONT allow users to stop the recording since it needs to record for atleast 15 seconds
-            alert("The Microphone will automatically stop recording after the 15 seconds required to identify a song")
+            if(micLocked) alert("The Microphone needs atleast 7 seconds to identify the song")
+            else micSwitch()
         }
     })
 })
