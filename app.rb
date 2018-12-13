@@ -22,54 +22,41 @@ require_relative "validation.rb"
 
 # define function to easily generate a query string based on params
 def makeQueryString song, album, artist
-	string = song
-	if(string.nil? == false)
-		string += " from "
-	end
-	string += album
-	if(string.nil? == false)
-		string += " by "
-	end
-	string += artist
+	string = ""
+	string += "\"" + song + "\"" if(song.nil? == false) 
+	string += " from " if(song.nil? == false && album.nil? == false) 
+	string += "\"" + album + "\"" if(album.nil? == false) 
+	string +=" by " if((song.nil? == false && artist.nil? == false) || (album.nil? == false && artist.nil? == false)) 
+	string += "\"" + artist + "\"" if(artist.nil? == false) 
 	return string
 end
 
 post "/getLyrics" do
 	# grab the params
-	# songName = params[:song]
-	# albumName = params[:album]
-	# artistName = params[:artist]
+	songName = params[:song]
+	albumName = params[:album]
+	artistName = params[:artist]
 
-	# setup to search for lyrics
-	fetcher = Lyricfy::Fetcher.new
-	song = fetcher.search 'Coldplay', 'Viva la vida'
-	return song.body
-end
+	# search for lyrics depending on avail params
+	if(artistName != "" && songName != "")
+		# setup for search
+		fetcher = Lyricfy::Fetcher.new
 
-=begin
-# search for lyrics depending on avail params
-if(artistName != "" || songName != "")
-	theSong = ""
-	if(artistName != "" && songName != "") 
-		theSong = fetcher.search artistName, songName
-	elsif(artistName != "" ) 
-		theSong = fetcher.search artistName, ''
-	else 
-		theSong = fetcher.search '', songName
+		# perform the search
+		puts "-------------------------lyric fetch start"
+		song = fetcher.search(artistName, songName)
+		puts "-------------------------lyric fetch end"
+
+		# inform the client
+		if(song.nil?)
+			return 'Lyrics for ' + makeQueryString(songName, albumName, artistName) + ' Not Found'
+		else
+			return song.body
+		end
+	else
+		return 'In order to find the lyrics for ' + makeQueryString(songName, albumName, artistName) + ' (1) Artist Name AND (2) Song Name are required'
 	end
-
-	puts theSong.body
-	# puts lyrics.body("<br>")
-
-	# lyrics[:lyrics] = theSong
-
-	lyrics[:message] = 'no' #'lyrics for ' + makeQueryString songName, albumName, artistName + ' searched'
-	return lyrics.to_json
-else
-	lyrics[:message] = 'no' #'(1) Artist Name OR (2) Song Name Required for search'
-	return lyrics.to_json
 end
-=end
 
 post "/getURL" do
 	# grab the params
