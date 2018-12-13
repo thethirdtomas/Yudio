@@ -59,7 +59,7 @@ $( document ).ready(function() {
                               null;*/
     navigator.getUserMedia({audio:true}, soundDesired, soundNotAllowed)
 
-    navigator.mediaDevices.getUserMedia({audio:true, mimeType: 'audio/webm'}).then((stream) => {
+    navigator.mediaDevices.getUserMedia({audio:true}).then((stream) => {
         //create a recorder that is available for manuipulation
         mediaRecorder = new MediaRecorder(stream)
 
@@ -87,41 +87,25 @@ $( document ).ready(function() {
             //use time with a wait of 0 simply to allow stop to finish before running
             //this way we are guaranteeed to grab our audioChunk
             setTimeout(function(){ 
-
-                console.log("audio chunks " + audioChunks.length)
-
                 //audio chunk conversion
-                const audioBlob = new Blob(audioChunks)
+                const audioBlob = new Blob(audioChunks, {type: "audio/webm"}) //mime type: "audio/webm" REQUIRED
+                var savedBlob = ""
                 const audioUrl = (window.URL || window.webkitURL).createObjectURL(audioBlob)
 
-                //convert something into a blob
-                var reader  = new window.FileReader();
-                var savedBlob = ""
+                //create file reader
+                var reader  = new FileReader()
+                //read blob as something else [EXPERIMENT]
+                reader.readAsDataURL(audioBlob) //param of type "blob" AND use of "readAsDataURL" REQUIRED
+                //run this function after file read complete
                 reader.onloadend = function() {
-                    var base64data = reader.result;
-                    savedBlob = base64data
-                    console.log(savedBlob);
-
-                    //---start
+                    savedBlob = reader.result
 
                     //send data as form data (you can send audioBlobs any other way)
                     var data = new FormData();
                     data.append('audioBlob', audioBlob)
                     data.append('savedBlob', savedBlob)
                     data.append('audioUrl', audioUrl)
-                    data.append('blobName', (new Date()).getTime() + ".webm")
-
-                    //print the audio blob
-                    /*
-                    var myReader = new FileReader();
-                    myReader.onload = function(event){
-                        console.log("audio blob: " + JSON.stringify(myReader.result));
-                    };
-                    myReader.readAsText(audioBlob)
-                    */
-
-                    //print audio blob url
-                    console.log("audio url: " + audioUrl)
+                    data.append('blobName', (new Date()).getTime() + ".ogg")
 
                     //run the ajax call to download the file to the server
                     $.ajax({
@@ -134,10 +118,7 @@ $( document ).ready(function() {
                             console.log(response)
                         }
                     });
-
-                    //---end
                 }
-                reader.readAsDataURL(audioBlob); 
             }, 0);
         }
     })

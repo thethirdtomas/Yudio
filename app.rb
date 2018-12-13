@@ -33,15 +33,16 @@ post "/downloadFile" do
 	unless File.exists?(save_path)
 		Dir::mkdir(save_path)
 	end
+	file_name = save_path + blobName
 
 	puts "-------------------------directory found or created"
 
-	audio_data=Base64.decode64(savedBlob['data:audio/webm; base64,'.length .. -1])
-	File.open(save_path + blobName, 'wb') do |f| 
-		f.write audio_data 
+	audio_data = Base64.decode64(savedBlob['data:audio/ogg; base64,'.length .. -1])
+	File.open(file_name, 'wb') do |f| 
+		f.write audio_data
 	end
-	current_user.user_detail.audio=File.open(save_path + blobName)
-	current_user.user_detail.audio_content_type="application/octet-stream"
+	# current_user.user_detail.audio=File.open(file_name)
+	# current_user.user_detail.audio_content_type="application/octet-stream"
 
 	# Open and write the file to file system.
 	# File.open(save_path, 'wb') do |f|
