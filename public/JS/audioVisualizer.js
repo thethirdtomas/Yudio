@@ -89,7 +89,7 @@ $( document ).ready(function() {
 
     function micSwitch(){
         var start = "fa-microphone"
-        var stop = "fa-microphone-slash"
+        var stop = "fa-stop-circle"
         $(recordAudio).find("i").removeClass(((recording) ? stop : start))
         $(recordAudio).find("i").addClass(((recording) ? start : stop))
         recording = !recording
@@ -184,19 +184,60 @@ $( document ).ready(function() {
         }
     }
 
+    function micIndicator(isProcessing){
+        icon = $("#audioRecognizerLoading").find("i")
+        if(isProcessing){
+            $(icon).addClass("fa-refresh")
+            $(icon).addClass("fa-spin")
+            $(icon).addClass("fa")
+            $(icon).removeClass("fas")
+            $(icon).removeClass("fa-check")
+        }
+        else{
+            $(icon).removeClass("fa-refresh")
+            $(icon).removeClass("fa-spin")
+            $(icon).removeClass("fa")
+            $(icon).addClass("fas")
+            $(icon).addClass("fa-check")
+        }
+    }
+
     $(recordAudio).on("click", function(){
         console.log("recording " + recording)
         if(recording == false){
+            //lock the mic for X seconds
             micLocked = true
+
+            //tell user their recording is now processing
+            micIndicator(true)
+
+            //start the recording
             micSwitch()
 
-            //automatically stop the mic from running after X milliseconds
-            var millisecondsBeforeClose = 7000 //7 seconds
-            setTimeout(function(){ micLocked = false }, millisecondsBeforeClose)
+            //automatically show a message if the user stop the mic within x milliseconds
+            var millisecondsBeforeUnlock = 7000 //7 seconds
+            setTimeout(function(){ 
+                if(recording){
+                    //unlock the mic
+                    micLocked = false
+                    
+                    //tell user they can stop the recording
+                    micIndicator(false)
+                }
+            }, millisecondsBeforeUnlock)
+
+            //automaticaly stop the mic after x milliseconds (at this point the larger file gives no benefits)
+            var millisecondsBeforeAutoStop = 20000 //20 seconds
+            setTimeout(function(){ 
+                if(recording){
+                    //automatically stop the mic
+                    micSwitch()
+                }
+            }, millisecondsBeforeAutoStop)
         }
         else{ //DONT allow users to stop the recording since it needs to record for atleast 15 seconds
-            if(micLocked) alert("The Microphone needs atleast 7 seconds to identify the song")
-            else micSwitch()
+            if(micLocked) alert("We need atleast 7 seconds to identify the song")
+            micSwitch()
         }
     })
 })
