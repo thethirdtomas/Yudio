@@ -40,8 +40,6 @@ post "/downloadFile" do
 	File.open(file_name, 'wb') do |f| 
 		f.write audio_data
 	end
-	# current_user.user_detail.audio=File.open(file_name)
-	# current_user.user_detail.audio_content_type="application/octet-stream"
 	
 	return "file downloaded"
 end

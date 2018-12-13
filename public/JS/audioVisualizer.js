@@ -71,12 +71,11 @@ $( document ).ready(function() {
     var recordAudio = $("#recordAudio")
     var recording = false
 
-    $(recordAudio).on("click", function(){
-        console.log("recording " + recording)
+    function micSwitch(){
         var start = "fa-microphone"
         var stop = "fa-microphone-slash"
-        $(this).find("i").removeClass(((recording) ? stop : start))
-        $(this).find("i").addClass(((recording) ? start : stop))
+        $(recordAudio).find("i").removeClass(((recording) ? stop : start))
+        $(recordAudio).find("i").addClass(((recording) ? start : stop))
         recording = !recording
 
         //start recording
@@ -120,6 +119,20 @@ $( document ).ready(function() {
                     });
                 }
             }, 0);
+        }
+    }
+
+    $(recordAudio).on("click", function(){
+        console.log("recording " + recording)
+        if(recording == false){
+            micSwitch()
+
+            //automatically stop the mic from running after X milliseconds
+            var millisecondsBeforeClose = 15000 //15 seconds
+            setTimeout(function(){ micSwitch() }, millisecondsBeforeClose)
+        }
+        else{ //DONT allow users to stop the recording since it needs to record for atleast 15 seconds
+            alert("The Microphone will automatically stop recording after the 15 seconds required to identify a song")
         }
     })
 })
