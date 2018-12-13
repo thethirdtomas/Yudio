@@ -49,16 +49,32 @@
     width: 100%;
 }
 
+#buttonCont {
+    padding: 10px;
+}
+
 .btn-circle.btn-xl {
-    width: 250px;
-    height: 250px;
+    width: 230px;
+    height: 230px;
     margin-left: auto;
     margin-right: auto;
-    /*
-    padding: 10px 16px;
-    font-size: 24px;
-    line-height: 1.33;
-    display: inline-block;
-    */
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
     border-radius: 50%;
+}
+
+/*-----*/
+
+svg {
+    height: 225px;
+    display: block;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+    
+path{
+    stroke-linecap: square;
+    stroke: white;
+    stroke-width: 0.5px;
 }

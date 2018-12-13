@@ -2,7 +2,7 @@
 <!-- Jumbotron -->
 <div class="jumbotron jumbotron-fluid" id="jumbo-header">
   <div class="container">
-    <h1 class="display-4">Download Music From Youtube</h1>
+    <h2 class="display-4">Download Music From Youtube</h2>
     <p class="lead">Create an account to store links and more</p>
   </div>
 </div>
@@ -14,15 +14,41 @@
 <!--make the base url accessible to javascript files-->
 <script type="application/javascript" src="./JS/youtubeSearcher.js"></script>
 
+<!-- audio visualizer -->
+<script type="application/javascript" src="./JS/audioVisualizer.js"></script>
+
 <div class="container" id="url_forms">
   <form action="process_download" method="POST">
 
-    <h4>Generate the URL by identifying the song your are listening.. </h4>
+    <h4>Generate the URL by identifying the song your are listening to...</h4>
 
-    <div class="container" style="text-align: center;">
-      <button type="button" class="btn btn-default btn-circle btn-xl" id="recordAudio"><i class="fas fa-microphone fa-10x"></i></button>
+    <div style="position:relative !important;">
+    `<!-- audio visualizer background -->
+      <div style="position:relative;" id="svgHolder">
+        <svg preserveAspectRatio="none" id="visualizer" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+          <defs>
+            <mask id="mask">
+              <g id="maskGroup">
+              </g>
+            </mask>
+            <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff0a0a;stop-opacity:1" />
+                <stop offset="20%" style="stop-color:#f1ff0a;stop-opacity:1" />
+                <stop offset="90%" style="stop-color:#d923b9;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#050d61;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
+        </svg>
+      </div>
+
+      <!-- button over visualizer -->
+      <div class="container" style="text-align: center; position:absolute; top:0; left:0; z-index:10;" id="buttonCont">
+        <button type="button" class="btn btn-default btn-circle btn-xl" id="recordAudio"><i class="fas fa-microphone fa-8x"></i></button>
+      </div>
     </div>
 
+    <br>
     <h4>Generate the URL by Specifying...</h4>
 
     <!-- youtube link generator -->
@@ -47,6 +73,7 @@
       <input type="text" class="form-control" aria-describedby="basic-addon3" id="artistName">
     </div>
 
+    <br>
     <h4>Copy and Paste the URL from youtube</h4>
   
     <!-- youtube link url -->

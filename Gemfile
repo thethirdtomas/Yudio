@@ -8,7 +8,7 @@ gem 'certified', '~> 1.0'
 # helps make http requests
 gem 'httparty', '~> 0.13.7'
 
-# gem 'openssl', '~> 2.0.0.beta.1'
+# gem 'openssl', '~> 2.0', '>= 2.0.9'
 
 gem 'lyricfy', '~> 0.1.0'
 
