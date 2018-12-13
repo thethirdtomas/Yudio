@@ -1,11 +1,98 @@
+<!-- Jumbotron -->
+<div class="jumbotron-fluid" id="jumbo-header"  style="position:relative !important;">
+
+  <!-- audio visualizer -->
+  <div style="position:relative;">
+    <svg preserveAspectRatio="none" id="visualizer" style="height: 100px !important;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <mask id="mask">
+          <g id="maskGroup">
+          </g>
+        </mask>
+        <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#ff0a0a;stop-opacity:1" />
+            <stop offset="20%" style="stop-color:#f1ff0a;stop-opacity:1" />
+            <stop offset="90%" style="stop-color:#d923b9;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#050d61;stop-opacity:1" />
+        </linearGradient>
+      </defs>
+      <rect x="0" y="0" width="100%" height="100%" fill="url(#gradient)" mask="url(#mask)"></rect>
+    </svg>
+  </div>
+
+  <!-- Website Banner -->
+  <div class="container" style="text-align: center; position:absolute; top:0; left:0; right:0; bottom:0; margin:auto; z-index:10; height: 100%; display:table;">
+    <div style="margin: auto; display:table-cell; vertical-align: middle;">
+      <h2 class="display-4">Add a New Video</h2>
+    </div>
+  </div>
+
+</div>
+<!-- End Jumbotron -->
+
 <!--make the base url accessible to javascript files-->
 <script type="application/javascript" src="./JS/youtubeSearcher.js"></script>
 
+<!-- audio visualizer -->
+<script type="application/javascript" src="./JS/audioVisualizer.js"></script>
+
 <div class="container">
 	<h2>Add Video To Library</h2>
+
+    <h4>Generate the URL by...</h4>
+
+    <div class="row">
+      <div class="col-auto">
+        <h4 style="text-align: center;">Letting Us Listen</h4>
+        <div class="container" id="buttonCont" style="text-align: center;">
+          <!-- main record button -->
+          <button type="button" class="btn btn-default btn-circle btn-xl" id="recordAudio" style="position:relative; margin: auto; margin-bottom: 5px;"><i class="fas fa-microphone fa-5x"></i></button>
+
+          <!-- recording status button -->
+          <div style="color: black; float: right;" id="audioRecognizerLoading">
+            <i class="fas fa-check" style="font-size: 24px;"></i>
+          </div>
+
+          <!-- recording box result -->
+          <div class="alert alert-danger" role="alert" id="songIdentifierError" style="display:none;">
+            This is a danger alert—check it out!
+          </div>
+        </div>
+      </div>
+      <div class="col" style="display: table; height: 100%;">
+        <div style="display:table-cell; vertical-align: middle;">
+          <h4>Giving Us Song Details</h4>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Song Name</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" id="songName">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Album Name</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" id="albumName">
+          </div>
+
+          <div class="input-group mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text">Artist Name</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon3" id="artistName">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <h4>Copy and Paste the URL from youtube</h4>
+
 	<form action ="/create" method ="POST">
 		<div class="form-group">
-			<input name="title" type="text" class="form-control" id="title" aria-describedby="videoHelp" placeholder="Title">
+			<input name="title" type="text" class="form-control" id="title" aria-describedby="videoHelp" placeholder="The Title You Want To Assign It">
 		</div>
 		<div class="form-group">
 			<input name="video_url" type="text" class="form-control" id="video" placeholder="Video URL">
@@ -13,4 +100,14 @@
 		</div>
 		<button type="submit" class="btn btn-primary">Submit</button>
 	</form>
+
+	<!-- show song lyrics --->
+    <div id="lyricContainer" style="display:none;">
+      <br>
+      <h4>Song Lyrics</h4>
+      <div style="color: black;" id="lyricsLoading"><i class="fa fa-refresh fa-spin" style="font-size:24px"></i></div>
+      <div id="lyricsLoaded"></div>
+      <br>
+      <button type="button" class="btn btn-primary" id="lyricSearchButton">Lyric Search</button>
+    </div>
 </div>

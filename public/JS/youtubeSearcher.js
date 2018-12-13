@@ -102,7 +102,11 @@ $(document).ready(function() {
                     --- Use ‘intitle’ to find keywords in video title
                     */
                     url = "https://www.youtube.com/watch?v=" + response[0]['id']
-                    $("#urlLocation").val(url)
+
+                    urlLocation = $("#urlLocation") //for '/'
+                    urlLocation = (urlLocation.length !== 0) ? urlLocation : $("#video") //for '/add'
+
+                    $(urlLocation).val(url)
                 }
             });
         })
