@@ -1,9 +1,84 @@
 require "sinatra"
 require "stripe"
 require 'sinatra/flash'
+require 'json'
+
+# OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
+ENV['SSL_CERT_FILE'] = './cacert.pem'
+require 'net/http'
+require 'uri'
+require 'httparty'
+
+# youtube data public key from Bryan Cancel's Google Developer Console
+# AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8
+key = "AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8"
+
+# youtube list parameters link below
+# https://developers.google.com/youtube/v3/docs/videos/list
+
 require_relative "authentication.rb"
 require_relative "validation.rb"
 
+post "/getURL" do
+	# grab the params
+	song = params[:song]
+	album = params[:album]
+	artist = params[:artist]
+
+	# define function to easily generate a query string based on params
+	def makeQueryString song, album, artist
+		string = song
+		if(string.nil? == false)
+			string += " from "
+		end
+		string += album
+		if(string.nil? == false)
+			string += " by "
+		end
+		string += artist
+		return string
+	end
+	
+	# set your parameters
+	maxResults = 3
+	order = "relevance"
+	part = "snippet"
+	query = makeQueryString song, album, artist
+	relevanceLanguage = "en"
+	safeSearch = "none"
+	type = "video"
+	
+	# url is constructed with those params
+	url = "https://www.googleapis.com/youtube/v3/search?key=" + key + 
+	"&maxResults=" + maxResults.to_s +
+	"&order=" + order +
+	"&part=" + part +
+	"&q=" + URI::encode(query) +
+	"&relevanceLanguage=" + relevanceLanguage +
+	"&safeSearch=" + safeSearch +
+	"&type=" + type
+	
+	# grab json file that the url outputs
+	response = HTTParty.get(url)
+	json = response.parsed_response
+	videos = json["items"]
+
+	# create  var that we will return to ajax call
+	response = []
+	
+	# create and add the hash for each of the videos
+	videos.each{ |video|
+		videoHash = {}
+		videoHash[:id] = video["id"]["videoId"]
+		videoHash[:title] = video["snippet"]["title"]
+		videoHash[:description] = video["snippet"]["description"]
+		videoHash[:thumbnails] = video["snippet"]["thumbnails"].to_json
+
+		response.push(videoHash)
+	}
+	
+	return response.to_json
+end
 
 #the following urls are included in authentication.rb
 # GET /login
