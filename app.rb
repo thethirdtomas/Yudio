@@ -2,6 +2,7 @@ require "sinatra"
 require "stripe"
 require 'sinatra/flash'
 require 'json'
+require 'lyricfy'
 
 # OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 ENV['SSL_CERT_FILE'] = './cacert.pem'
@@ -19,25 +20,62 @@ key = "AIzaSyBveT5vyHDYjHAyiVMbAa19l5HSoPQEdM8"
 require_relative "authentication.rb"
 require_relative "validation.rb"
 
+# define function to easily generate a query string based on params
+def makeQueryString song, album, artist
+	string = song
+	if(string.nil? == false)
+		string += " from "
+	end
+	string += album
+	if(string.nil? == false)
+		string += " by "
+	end
+	string += artist
+	return string
+end
+
+post "/getLyrics" do
+	# grab the params
+	# songName = params[:song]
+	# albumName = params[:album]
+	# artistName = params[:artist]
+
+	# setup to search for lyrics
+	fetcher = Lyricfy::Fetcher.new
+	song = fetcher.search 'Coldplay', 'Viva la vida'
+	return song.body
+end
+
+=begin
+# search for lyrics depending on avail params
+if(artistName != "" || songName != "")
+	theSong = ""
+	if(artistName != "" && songName != "") 
+		theSong = fetcher.search artistName, songName
+	elsif(artistName != "" ) 
+		theSong = fetcher.search artistName, ''
+	else 
+		theSong = fetcher.search '', songName
+	end
+
+	puts theSong.body
+	# puts lyrics.body("<br>")
+
+	# lyrics[:lyrics] = theSong
+
+	lyrics[:message] = 'no' #'lyrics for ' + makeQueryString songName, albumName, artistName + ' searched'
+	return lyrics.to_json
+else
+	lyrics[:message] = 'no' #'(1) Artist Name OR (2) Song Name Required for search'
+	return lyrics.to_json
+end
+=end
+
 post "/getURL" do
 	# grab the params
 	song = params[:song]
 	album = params[:album]
 	artist = params[:artist]
-
-	# define function to easily generate a query string based on params
-	def makeQueryString song, album, artist
-		string = song
-		if(string.nil? == false)
-			string += " from "
-		end
-		string += album
-		if(string.nil? == false)
-			string += " by "
-		end
-		string += artist
-		return string
-	end
 	
 	# set your parameters
 	maxResults = 3
